@@ -1,34 +1,29 @@
 import { PocketbaseCrud, usePocketBase } from "@chapelure/api/pocketbase.ts";
-import { type UsersResponse, Collections } from "@common/types.g";
+import { type BaseSystemFields, Collections } from "@common/types.g";
 
-type UserExpand = {
-};
-
-export type UserData = UsersResponse<UserExpand>;
-
-class UsersService extends PocketbaseCrud<UserData> {
+class UsersService<TUser extends BaseSystemFields> extends PocketbaseCrud<TUser> {
 
     constructor() {
         super(Collections.Users);
     }
 
-    async register(email: string, password: string, passwordConfirm: string): Promise<UserData | null> {
-        await this.collection.create<UserData>({ email: email, password: password, passwordConfirm: passwordConfirm });
+    async register(email: string, password: string, passwordConfirm: string): Promise<TUser | null> {
+        await this.collection.create<TUser>({ email: email, password: password, passwordConfirm: passwordConfirm });
         // TODO : send email verification
         // collection.requestVerification(email);
-        const result = await this.collection.authWithPassword<UserData>(email, password);
+        const result = await this.collection.authWithPassword<TUser>(email, password);
         return result?.record;
     }
 
-    async login(email: string, password: string): Promise<UserData | null> {
+    async login(email: string, password: string): Promise<TUser | null> {
 
-        const result = await this.collection.authWithPassword<UserData>(email, password);
+        const result = await this.collection.authWithPassword<TUser>(email, password);
         return result?.record;
     }
 
-    async refresh(): Promise<UserData | null> {
+    async refresh(): Promise<TUser | null> {
 
-        const result = await this.collection.authRefresh<UserData>();
+        const result = await this.collection.authRefresh<TUser>();
         return result?.record;
     }
 

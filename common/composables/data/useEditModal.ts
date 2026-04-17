@@ -1,10 +1,9 @@
-import { computed, ref, type Ref } from 'vue';
-import { useDeferredModal } from '@common/composables/popups/modal';
-import { useValidationErrors } from '@common/utils/dev';
-import { useAlert } from '@common/composables/popups/alert';
+import type { BaseEntity, IDataCrud } from '@chapelure/api/crud';
+import { useAlert } from '@chapelure/common/composables/popups/alert';
+import { useDeferredModal } from '@chapelure/common/composables/popups/modal';
+import { useValidationErrors } from '@chapelure/common/utils/dev';
+import { computed, ref, toRaw, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { BaseEntity, IDataCrud } from '@api/crud';
-import { toRaw } from 'vue';
 
 export function useEditModal<T extends BaseEntity>(dialog: Ref<HTMLDialogElement | null>, crud: IDataCrud<T>) {
     const modal = useDeferredModal<T>(dialog);

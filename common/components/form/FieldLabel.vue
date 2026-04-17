@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import FieldError from '@common/components/form/FieldError.vue';
+import FieldError from '@chapelure/common/components/form/FieldError.vue';
 
 defineProps<{
   label: any,

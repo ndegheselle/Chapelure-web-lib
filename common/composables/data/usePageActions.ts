@@ -1,7 +1,8 @@
-import { useConfirmation } from '@chapelure/common/composables/popups/confirmation';
 import type { PaginationOptions } from '@chapelure/api/crud';
 import { type IDataCrud } from '@chapelure/api/crud';
+import { useConfirmation } from '@chapelure/common/composables/popups/confirmation';
 import type { BaseSystemFields } from '@common/types.g';
+import { TriangleAlertIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 export function usePageActions<T extends BaseSystemFields>(data: IDataCrud<T>, editCallback: ((element: T) => Promise<boolean> | undefined) | undefined = undefined)
@@ -17,7 +18,7 @@ export function usePageActions<T extends BaseSystemFields>(data: IDataCrud<T>, e
         const confirmed = await confirmation.show(
             'Confirmer la suppression',
             `Êtes-vous sûr de vouloir supprimer cet élément ?`,
-            'fa-solid fa-triangle-exclamation text-warning');
+            TriangleAlertIcon);
 
         if (!confirmed) {
             return;

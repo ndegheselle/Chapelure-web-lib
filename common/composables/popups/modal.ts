@@ -1,4 +1,4 @@
-import { Deferred } from '@common/utils/deferred.ts';
+import { Deferred } from '@chapelure/common/utils/deferred.ts';
 import { ref, type Ref } from 'vue';
 
 export function useDeferredModal<T = boolean>(dialogRef?: Ref<HTMLDialogElement | null>) {

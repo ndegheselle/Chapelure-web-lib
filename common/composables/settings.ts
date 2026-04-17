@@ -1,5 +1,5 @@
+import { i18n } from '@chapelure/common/i18n';
 import { ref } from "vue";
-import { i18n } from '@common/i18n';
 
 export enum EnumTheme {
     auto,

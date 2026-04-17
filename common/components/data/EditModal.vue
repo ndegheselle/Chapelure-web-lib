@@ -1,8 +1,8 @@
 <script setup lang="ts" generic="T extends BaseEntity">
-import { useAlert } from '@common/composables/popups/alert';
-import { useDeferredModal } from '@common/composables/popups/modal';
-import type { BaseEntity, IDataCrud } from '@api/crud';
-import { useValidationErrors } from '@common/utils/dev';
+import type { BaseEntity, IDataCrud } from '@chapelure/api/crud';
+import { useAlert } from '@chapelure/common/composables/popups/alert';
+import { useDeferredModal } from '@chapelure/common/composables/popups/modal';
+import { useValidationErrors } from '@chapelure/common/utils/dev';
 import { reactive, ref, useTemplateRef } from 'vue';
 
 const dialog = useTemplateRef<HTMLDialogElement>('dialog');

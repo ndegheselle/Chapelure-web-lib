@@ -1,31 +1,28 @@
-import { NotAuthentifiedError } from '@common/utils/dev';
-import { users, type UserData } from '@features/users/data/users';
+import { users } from '@chapelure/auth/data/users';
+import { NotAuthentifiedError } from '@chapelure/common/utils/dev';
+import type { BaseSystemFields } from '@common/types.g';
 import { routesNames } from '@features/users/routes';
-import { computed, readonly, ref } from 'vue';
+import { computed, readonly, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-// --- shared state (singleton) ---
-const current = ref<UserData | null>(null);
+const current = ref<BaseSystemFields | null>(null);
 
-export function useAuth() {
+export function useAuth<TUser extends BaseSystemFields>() {
     const router = useRouter();
-
     const isLoggedIn = computed(() => current.value !== null);
 
-    async function update(data: Partial<UserData>) {
+    async function update(data: Partial<TUser>) {
         if (!current.value) return;
         const updated = await users.update(current.value.id, data);
         current.value = updated;
     }
 
     async function register(email: string, password: string, passwordConfirm: string) {
-        const user = await users.register(email, password, passwordConfirm);
-        current.value = user;
+        current.value = await users.register(email, password, passwordConfirm);
     }
 
     async function login(email: string, password: string) {
-        const user = await users.login(email, password);
-        current.value = user;
+        current.value = await users.login(email, password);
     }
 
     async function logout() {
@@ -36,8 +33,7 @@ export function useAuth() {
 
     async function refresh() {
         try {
-            const me = await users.refresh();
-            current.value = me;
+            current.value = await users.refresh();
         } catch {
             current.value = null;
         }
@@ -45,18 +41,13 @@ export function useAuth() {
     }
 
     function currentId(): string {
-        if (!current.value) {
-            throw new NotAuthentifiedError();
-        }
+        if (!current.value) throw new NotAuthentifiedError();
         return current.value.id;
     }
 
     return {
-        // expose readonly state
-        current: readonly(current),
+        current: readonly(current) as Readonly<Ref<TUser | null>>,
         isLoggedIn,
-
-        // actions
         login,
         register,
         logout,

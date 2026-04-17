@@ -1,6 +1,6 @@
 <!-- Example of a reusable modal -->
 <script setup lang="ts" generic="T = boolean">
-import { useDeferredModal } from '@common/composables/popups/modal';
+import { useDeferredModal } from '@chapelure/common/composables/popups/modal';
 import { useTemplateRef } from 'vue';
 
 const dialog = useTemplateRef<HTMLDialogElement>('dialog');
@@ -40,7 +40,7 @@ defineSlots<{
                         Annuler
                     </button>
                     <button class="btn btn-primary"
-                            @click="modal.confirm()">
+                            @click="modal.confirm(null)">
                         Confirmer
                     </button>
                 </slot>

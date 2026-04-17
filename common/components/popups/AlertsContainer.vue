@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { EnumAlertType, useAlert } from '@common/composables/popups/alert.ts';
+import { EnumAlertType, useAlert } from '@chapelure/common/composables/popups/alert.ts';
 import { BrushCleaningIcon, CircleAlertIcon, CircleCheckIcon, TriangleAlertIcon, XIcon } from 'lucide-vue-next';
 const { alerts, close } = useAlert();
 </script>
