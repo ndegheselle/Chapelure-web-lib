@@ -1,7 +1,7 @@
 import { PocketbaseCrud, usePocketBase } from "@chapelure/api/pocketbase.ts";
 import { type BaseSystemFields, Collections } from "@common/types.g";
 
-class UsersService<TUser extends BaseSystemFields> extends PocketbaseCrud<TUser> {
+class AuthService<TUser extends BaseSystemFields> extends PocketbaseCrud<TUser> {
 
     constructor() {
         super(Collections.Users);
@@ -33,4 +33,4 @@ class UsersService<TUser extends BaseSystemFields> extends PocketbaseCrud<TUser>
     }
 }
 
-export const users = new UsersService();
+export const auth = new AuthService();

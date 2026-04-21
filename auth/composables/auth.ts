@@ -1,4 +1,4 @@
-import { users } from '@chapelure/auth/data/users';
+import { auth } from '@chapelure/auth/data/auth';
 import { NotAuthentifiedError } from '@chapelure/common/utils/dev';
 import type { BaseSystemFields } from '@common/types.g';
 import { routesNames } from '@features/users/routes';
@@ -13,27 +13,27 @@ export function useAuth<TUser extends BaseSystemFields>() {
 
     async function update(data: Partial<TUser>) {
         if (!current.value) return;
-        const updated = await users.update(current.value.id, data);
+        const updated = await auth.update(current.value.id, data);
         current.value = updated;
     }
 
     async function register(email: string, password: string, passwordConfirm: string) {
-        current.value = await users.register(email, password, passwordConfirm);
+        current.value = await auth.register(email, password, passwordConfirm);
     }
 
     async function login(email: string, password: string) {
-        current.value = await users.login(email, password);
+        current.value = await auth.login(email, password);
     }
 
     async function logout() {
-        await users.logout();
+        await auth.logout();
         current.value = null;
         router.push({ name: routesNames.login });
     }
 
     async function refresh() {
         try {
-            current.value = await users.refresh();
+            current.value = await auth.refresh();
         } catch {
             current.value = null;
         }
