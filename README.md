@@ -159,7 +159,7 @@ Auth route names (`routesNames.login`, `routesNames.register`) must be provided 
 ### Using auth state in components
 
 ```ts
-import { useAuth } from '@chapelure/auth/composables/auth';
+import { useAuth } from '@chapelure/auth/composables/useAuth';
 
 const { current, isLoggedIn, login, logout, register } = useAuth();
 ```

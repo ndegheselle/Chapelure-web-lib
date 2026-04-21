@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import LoginProviders from '@chapelure/auth/components/LoginProviders.vue';
-import { useAuth } from '@chapelure/auth/composables/auth';
+import { useAuth } from '@chapelure/auth/composables/useAuth';
 import FieldError from '@chapelure/common/components/form/FieldError.vue';
 import FieldLabel from '@chapelure/common/components/form/FieldLabel.vue';
 import { NotImplementedError, useValidationErrors } from '@chapelure/common/utils/dev';

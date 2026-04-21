@@ -1,5 +1,6 @@
 {
     "users": {
+        "account": "Compte",
         "title": "Utilisateur",
         "logout": "Déconnexion",
         "login": {

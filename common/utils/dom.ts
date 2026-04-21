@@ -12,11 +12,15 @@ export function applyDefaultBehaviors() {
             return;
         }
 
+        const interactible = (target as Element).closest?.('a, button, input, select, textarea, [role="button"], [role="menuitem"], [role="option"]');
+
         if (!details.some(f => f.contains(target))) {
             details.forEach(f => f.removeAttribute('open'));
         } else {
             details.forEach(f => {
                 if (!f.contains(target)) {
+                    f.removeAttribute('open');
+                } else if (interactible && f.contains(interactible)) {
                     f.removeAttribute('open');
                 }
             });

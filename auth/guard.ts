@@ -1,5 +1,5 @@
 import type { RouteLocationNormalized } from "vue-router";
-import { useAuth } from "./composables/auth";
+import { useAuth } from "./composables/useAuth";
 
 export function authGuard(routesNames: { login: string, register: string }) {
     return async function usersBeforeEach(to: RouteLocationNormalized) {
