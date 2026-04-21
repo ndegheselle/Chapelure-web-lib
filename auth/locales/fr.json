@@ -3,7 +3,7 @@
         "title": "Utilisateur",
         "logout": "Déconnexion",
         "login": {
-            "title": "Connexion",
+            "title": "Se connecter",
             "defaultError": "Mauvais identifiants."
         },
         "register": "Inscription",
