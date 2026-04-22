@@ -38,6 +38,7 @@ const selected = ref<T | null>(props.selected);
 
 defineSlots<{
     actions(): any;
+    filters(): any;
     row(props: { item: T }): any;
 }>();
 
@@ -82,6 +83,8 @@ watch(() => props.selected, (newVal) => {
                 <slot name="actions" />
             </div>
         </div>
+
+        <slot name="filters" />
 
         <!-- List Container -->
         <ul class="list bg-base-100 rounded-box border border-base-content/5 mt-1 max-h-64 overflow-y-auto">
