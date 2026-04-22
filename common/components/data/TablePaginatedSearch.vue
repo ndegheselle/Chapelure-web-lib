@@ -2,9 +2,8 @@
 import type { BaseEntity } from '@chapelure/api/crud';
 import { type PaginationOptions, SortDirection } from '@chapelure/api/crud';
 import Pagination from '@chapelure/common/components/data/Pagination.vue';
-import { debounce } from '@chapelure/common/utils/debounce';
-import { SearchIcon } from 'lucide-vue-next';
-import { onMounted, ref } from 'vue';
+import Search from '@chapelure/common/components/data/Search.vue';
+import { onMounted } from 'vue';
 
 const { pagination = {
     sortBy: undefined,
@@ -17,7 +16,7 @@ const { pagination = {
     pagination?: PaginationOptions
 }>();
 
-const search = ref('');
+let search = '';
 
 defineSlots<{
     actions(): any;
@@ -82,21 +81,22 @@ function handleHeaderClick(event: MouseEvent) {
     }
 }
 
-async function refresh() {
-    emit('refresh', search.value, pagination);
+function onSearch(value: string) {
+    search = value;
+    refresh();
 }
 
-const debouncedLoad = debounce(refresh, 300);
+async function refresh() {
+    emit('refresh', search, pagination);
+}
+
 onMounted(refresh);
 </script>
 
 <template>
     <div class="flex flex-col">
         <div class="flex">
-            <label class="input input-sm">
-                <SearchIcon class="opacity-50" />
-                <input @input="debouncedLoad" type="search" :placeholder="$t('actions.search')" v-model="search" />
-            </label>
+            <Search @search="onSearch" />
             <div class="ms-auto">
                 <slot name="actions" />
             </div>

@@ -1,51 +1,41 @@
 import { ref, shallowRef, type Component } from 'vue';
 
-const dialog = ref<HTMLDialogElement | null>(null);
+type ModalRef = { show(): Promise<boolean | null>; confirm(): void; cancel(): void };
 
 const title = ref('');
 const message = ref('');
 const icon = shallowRef<Component | null>(null);
-let resolver: ((value: boolean) => void) | null = null;
+
+let modalRef: ModalRef | null = null;
 
 export function useConfirmation() {
 
-  function registerDialog(el: HTMLDialogElement) {
-    dialog.value = el;
-  }
+    function registerModal(modal: ModalRef) {
+        modalRef = modal;
+    }
 
-  function show(t: string, m: string, i?: Component): Promise<boolean> {
-    title.value = t;
-    message.value = m;
-    icon.value = i ?? null;
+    function show(t: string, m: string, i?: Component): Promise<boolean | null> {
+        title.value = t;
+        message.value = m;
+        icon.value = i ?? null;
+        return modalRef!.show();
+    }
 
-    return new Promise<boolean>((resolve) => {
-      resolver = resolve;
-      dialog.value?.showModal();      // <-- directly open the modal here
-    });
-  }
+    function confirm() {
+        modalRef?.confirm();
+    }
 
-  function confirm() {
-    resolver?.(true);
-    cleanup();
-  }
+    function cancel() {
+        modalRef?.cancel();
+    }
 
-  function cancel() {
-    resolver?.(false);
-    cleanup();
-  }
-
-  function cleanup() {
-    dialog.value?.close();
-    resolver = null;
-  }
-
-  return {
-    registerDialog,
-    title,
-    message,
-    icon,
-    show,
-    confirm,
-    cancel,
-  };
+    return {
+        registerModal,
+        title,
+        message,
+        icon,
+        show,
+        confirm,
+        cancel,
+    };
 }

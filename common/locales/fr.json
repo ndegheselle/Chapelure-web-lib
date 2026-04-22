@@ -19,7 +19,7 @@
     },
     "actions": {
         "select": "Sélectionner",
-        "search": "Rechercher",
+        "search": "Rechercher ...",
         "add": "Ajouter",
         "save": "Sauvegarder",
         "cancel": "Annuler",

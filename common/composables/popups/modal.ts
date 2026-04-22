@@ -11,7 +11,7 @@ export function useDeferredModal<T = boolean>(dialogRef?: Ref<HTMLDialogElement 
         return deferred.promise;
     }
 
-    function confirm(result: T | null) {
+    function confirm(result: T | null = true as any) {
         internalDialogRef.value?.close();
         deferred?.resolve(result ?? true as any);
         deferred = null;

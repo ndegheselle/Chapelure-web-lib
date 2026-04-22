@@ -1,47 +1,26 @@
 <script setup lang="ts">
 import { useConfirmation } from '@chapelure/common/composables/popups/confirmation.ts';
-import { CheckIcon, XIcon } from 'lucide-vue-next';
 import { onMounted, useTemplateRef } from 'vue';
+import Modal from '@chapelure/common/components/popups/Modal.vue';
 
 const confirmation = useConfirmation();
-const dialog = useTemplateRef<HTMLDialogElement>('dialog');
+const modal = useTemplateRef<{ show(): any; confirm(): void; cancel(): void }>('modal');
 
 onMounted(() => {
-    if (dialog.value) {
-        confirmation.registerDialog(dialog.value);
+    if (modal.value) {
+        confirmation.registerModal(modal.value);
     }
 });
 </script>
 <template>
-    <dialog class="modal" ref="dialog">
-        <div class="modal-box">
-            <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </form>
+    <Modal ref="modal" @cancel="confirmation.cancel()">
+        <template #title>
+            <component :is="confirmation.icon.value" v-if="confirmation.icon.value" class="mr-2 icon-lg inline" />
+            {{ confirmation.title }}
+        </template>
 
-            <div class="flex items-center mb-1">
-                <component :is="confirmation.icon.value" v-if="confirmation.icon.value" class="mr-2 icon-lg" />
-                <h3 class="text-lg font-bold">{{ confirmation.title }}</h3>
-            </div>
-
+        <template #body>
             <p v-html="confirmation.message.value"></p>
-
-            <div class="modal-action">
-                <button class="btn" @click="confirmation.cancel()">
-                    <XIcon />
-                    {{ $t("actions.cancel") }}
-                </button>
-                <button class="btn btn-primary" @click="confirmation.confirm()">
-                    <CheckIcon />
-                    {{ $t("actions.confirm") }}
-                </button>
-            </div>
-        </div>
-
-        <form method="dialog" class="modal-backdrop">
-            <button @click="confirmation.cancel()">close</button>
-        </form>
-    </dialog>
+        </template>
+    </Modal>
 </template>
