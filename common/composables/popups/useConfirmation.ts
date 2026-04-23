@@ -1,32 +1,31 @@
+import type { IModalController } from '@chapelure/common/composables/popups/useModal';
 import { ref, shallowRef, type Component } from 'vue';
-
-type ModalRef = { show(): Promise<boolean | null>; confirm(): void; cancel(): void };
 
 const title = ref('');
 const message = ref('');
 const icon = shallowRef<Component | null>(null);
 
-let modalRef: ModalRef | null = null;
+let modalController: IModalController | null = null;
 
 export function useConfirmation() {
 
-    function registerModal(modal: ModalRef) {
-        modalRef = modal;
+    function registerModal(modal: IModalController) {
+        modalController = modal;
     }
 
     function show(t: string, m: string, i?: Component): Promise<boolean | null> {
         title.value = t;
         message.value = m;
         icon.value = i ?? null;
-        return modalRef!.show();
+        return modalController!.show();
     }
 
     function confirm() {
-        modalRef?.confirm();
+        modalController?.confirm(true);
     }
 
     function cancel() {
-        modalRef?.cancel();
+        modalController?.cancel();
     }
 
     return {

@@ -1,26 +1,25 @@
 <script setup lang="ts">
-import { useConfirmation } from '@chapelure/common/composables/popups/confirmation.ts';
-import { onMounted, useTemplateRef } from 'vue';
+import { useConfirmation } from '@chapelure/common/composables/popups/useConfirmation';
+import { onMounted } from 'vue';
 import Modal from '@chapelure/common/components/popups/Modal.vue';
+import { useDeferredModal } from '@chapelure/common/composables/popups/useModal';
 
 const confirmation = useConfirmation();
-const modal = useTemplateRef<{ show(): any; confirm(): void; cancel(): void }>('modal');
+const controller = useDeferredModal();
 
 onMounted(() => {
-    if (modal.value) {
-        confirmation.registerModal(modal.value);
-    }
+    confirmation.registerModal(controller);
 });
 </script>
 <template>
-    <Modal ref="modal" @cancel="confirmation.cancel()">
+    <Modal :controller="controller">
         <template #title>
-            <component :is="confirmation.icon.value" v-if="confirmation.icon.value" class="mr-2 icon-lg inline" />
-            {{ confirmation.title }}
+            <span class="flex">
+                <component :is="confirmation.icon.value" v-if="confirmation.icon.value"
+                    class="mr-2 my-auto icon-lg inline" />
+                {{ confirmation.title }}
+            </span>
         </template>
-
-        <template #body>
-            <p v-html="confirmation.message.value"></p>
-        </template>
+        <p v-html="confirmation.message.value"></p>
     </Modal>
 </template>

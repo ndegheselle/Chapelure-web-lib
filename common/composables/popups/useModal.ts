@@ -1,32 +1,41 @@
 import { Deferred } from '@chapelure/common/utils/deferred.ts';
 import { ref, type Ref } from 'vue';
 
-export function useDeferredModal<T = boolean>(dialogRef?: Ref<HTMLDialogElement | null>) {
-    const internalDialogRef = dialogRef || ref<HTMLDialogElement | null>(null);
+export interface IModalController<T = boolean> {
+    isShown: Ref<boolean>;
+    show(): Promise<T | null>;
+    confirm(result: T | null): void;
+    cancel(): void;
+}
+
+export function useDeferredModal<T = boolean>() : IModalController<T> {
+    const isShown = ref<boolean>(false);
     let deferred: Deferred<T | null> | null = null;
 
     function show(): Promise<T | null> {
+        // XXX : could replace by
+        // let { promise, resolve, reject } = Promise.withResolvers<T | null>();
         deferred = new Deferred<T | null>();
-        internalDialogRef.value?.showModal();
+        isShown.value = true;
         return deferred.promise;
     }
 
     function confirm(result: T | null = true as any) {
-        internalDialogRef.value?.close();
+        isShown.value = false;
         deferred?.resolve(result ?? true as any);
         deferred = null;
     }
 
     function cancel() {
-        internalDialogRef.value?.close();
+        isShown.value = false;
         deferred?.resolve(null);
         deferred = null;
     }
 
     return {
-        dialogRef: internalDialogRef,
+        isShown,
         show,
         confirm,
         cancel
-    }
+    } as IModalController<T>;
 }

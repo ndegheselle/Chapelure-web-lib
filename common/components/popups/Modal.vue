@@ -1,29 +1,28 @@
 <!-- Example of a reusable modal -->
 <script setup lang="ts" generic="T = boolean">
-import { useDeferredModal } from '@chapelure/common/composables/popups/modal';
-import { useTemplateRef } from 'vue';
+import { useTemplateRef, watch } from 'vue';
 import { CheckIcon, XIcon } from 'lucide-vue-next';
+import { useDeferredModal, type IModalController } from '@chapelure/common/composables/popups/useModal';
+
+const { controller = useDeferredModal(), withActions = true } = defineProps<{
+    withActions?: boolean,
+    controller?: IModalController<T>
+}>();
 
 const dialog = useTemplateRef<HTMLDialogElement>('dialog');
-const modal = useDeferredModal<T>(dialog);
 
-const { withActions = true } = defineProps<{
-    withActions?: boolean
-}>();
+watch(controller.isShown, (isShown) => {
+    if (isShown) {
+        dialog.value?.showModal();
+    } else {
+        dialog.value?.close();
+    }
+});
 
-const emit = defineEmits<{
-    cancel: []
-}>();
-
-function handleCancel() {
-    modal.cancel();
-    emit('cancel');
-}
-
-defineExpose({ confirm: modal.confirm, show: modal.show, cancel: modal.cancel });
+defineExpose({ confirm: controller.confirm, show: controller.show, cancel: controller.cancel });
 defineSlots<{
     title: any;
-    body: any;
+    default: any;
     actions: any;
 }>();
 </script>
@@ -31,23 +30,23 @@ defineSlots<{
 <template>
     <dialog ref="dialog" class="modal">
         <div class="modal-box">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click="handleCancel">
-                <i class="fa-solid fa-xmark"></i>
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click="() => controller.cancel()">
+                <XIcon />
             </button>
             <h3 class="text-lg font-bold">
                 <slot name="title" />
             </h3>
 
-            <slot name="body" />
+            <slot />
 
             <!-- Actions -->
             <div class="modal-action" v-if="withActions">
                 <slot name="actions">
-                    <button class="btn" @click="handleCancel">
+                    <button class="btn" @click="() => controller.cancel()">
                         <XIcon />
                         {{ $t("actions.cancel") }}
                     </button>
-                    <button class="btn btn-primary" @click="modal.confirm()">
+                    <button class="btn btn-primary" @click="() => controller.confirm(true as any)">
                         <CheckIcon />
                         {{ $t("actions.confirm") }}
                     </button>
@@ -56,7 +55,7 @@ defineSlots<{
         </div>
 
         <div class="modal-backdrop">
-            <button @click="handleCancel">close</button>
+            <button @click="() => controller.cancel()">close</button>
         </div>
     </dialog>
 </template>

@@ -26,7 +26,7 @@ export function useAuth<TUser extends BaseSystemFields>() {
     }
 
     async function logout() {
-        await auth.logout();
+        auth.logout();
         current.value = null;
         router.push({ name: routesNames.login });
     }

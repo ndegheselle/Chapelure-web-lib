@@ -1,12 +1,11 @@
 import type { BaseEntity, IDataCrud } from '@chapelure/api/crud';
-import { useAlert } from '@chapelure/common/composables/popups/alert';
-import { useDeferredModal } from '@chapelure/common/composables/popups/modal';
+import { useAlert } from '@chapelure/common/composables/popups/useAlert';
+import type { IModalController } from '@chapelure/common/composables/popups/useModal';
 import { useValidationErrors } from '@chapelure/common/utils/dev';
-import { computed, ref, toRaw, type Ref } from 'vue';
+import { computed, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-export function useEditModal<T extends BaseEntity>(dialog: Ref<HTMLDialogElement | null>, crud: IDataCrud<T>) {
-    const modal = useDeferredModal<T>(dialog);
+export function useEditModal<T extends BaseEntity>(modal: IModalController<T>, crud: IDataCrud<T>) {
     const alert = useAlert();
 
     const data = ref<T>({} as T);
@@ -39,6 +38,7 @@ export function useEditModal<T extends BaseEntity>(dialog: Ref<HTMLDialogElement
     }
 
     function show(child: T) {
+        console.log("show");
         const raw = toRaw(child);
         data.value = structuredClone(raw);
         return modal.show();
