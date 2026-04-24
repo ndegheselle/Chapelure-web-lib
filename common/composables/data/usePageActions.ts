@@ -1,7 +1,7 @@
 import type { PaginationOptions } from '@chapelure/api/crud';
 import { type IDataCrud } from '@chapelure/api/crud';
 import { useConfirmation } from '@chapelure/common/composables/popups/confirmation';
-import type { BaseSystemFields } from '@common/types.g';
+import type { BaseSystemFields } from '@shared/types.g';
 import { TriangleAlertIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 

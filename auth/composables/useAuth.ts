@@ -1,7 +1,7 @@
 import { auth } from '@chapelure/auth/data/auth';
 import { NotAuthentifiedError } from '@chapelure/common/utils/dev';
-import type { BaseSystemFields } from '@common/types.g';
 import { routesNames } from '@features/users/routes';
+import type { BaseSystemFields } from '@shared/types.g';
 import { computed, readonly, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 

@@ -1,5 +1,5 @@
 import { type IDataCrud, Paginated, PaginationOptions } from "@chapelure/api/crud";
-import type { BaseSystemFields, TypedPocketBase } from '@common/types.g.ts';
+import type { BaseSystemFields, TypedPocketBase } from '@shared/types.g.ts';
 import PocketBase from 'pocketbase';
 
 let pb: TypedPocketBase | null;
