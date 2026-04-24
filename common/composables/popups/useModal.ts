@@ -1,4 +1,4 @@
-import { Deferred } from '@chapelure/common/utils/deferred.ts';
+import { Deferred } from '@chapelure/common/base/deferred.ts';
 import { ref, type Ref } from 'vue';
 
 export interface IModalController<T = boolean> {

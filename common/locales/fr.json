@@ -25,7 +25,8 @@
         "cancel": "Annuler",
         "new": "Nouveau",
         "update": "Modifier",
-        "confirm": "Confirmer"
+        "confirm": "Confirmer",
+        "filter": "Filtrer"
     },
     "confirmation": {
         "remove": {
