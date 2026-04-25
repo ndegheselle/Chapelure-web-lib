@@ -6,7 +6,7 @@
 import type { BaseEntity } from '@chapelure/api/crud';
 import { CircleQuestionMarkIcon } from 'lucide-vue-next';
 const props = defineProps<{
-    items: T[];
+    items?: T[];
 }>();
 
 defineSlots<{
@@ -18,7 +18,7 @@ defineSlots<{
     <!-- List Container -->
     <ul class="list bg-base-100 rounded-box border border-base-content/5">
         <!-- Empty State -->
-        <li class="p-4 opacity-30 tracking-wide flex my-auto" v-if="!items.length">
+        <li class="p-4 opacity-30 tracking-wide flex my-auto" v-if="!items?.length">
             <div class="flex mx-auto">
                 <CircleQuestionMarkIcon class="mr-2 my-auto" />
                 <span>{{ $t('data.noResult') }}</span>
