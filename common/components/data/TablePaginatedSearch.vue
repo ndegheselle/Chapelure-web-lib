@@ -2,7 +2,7 @@
 import type { BaseEntity } from '@chapelure/api/crud';
 import { type PaginationOptions, SortDirection } from '@chapelure/api/crud';
 import Pagination from '@chapelure/common/components/data/Pagination.vue';
-import Search from '@chapelure/common/components/data/Search.vue';
+import Search from '@chapelure/common/components/inputs/Search.vue';
 import { onMounted } from 'vue';
 
 const { pagination = {
