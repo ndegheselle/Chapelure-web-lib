@@ -2,18 +2,15 @@
 import FieldError from '@chapelure/common/components/form/FieldError.vue';
 
 defineProps<{
-  label: any,
-  error?: string
+    label: any,
+    error?: string
 }>();
 </script>
 
 <template>
-  <div class="form-control">
-    <label v-if="label"
-           class="label" :class="{ 'text-error': error }">
-      <span class="label-text">{{ $t(label) }}</span>
-    </label>
-    <slot></slot>
-    <FieldError :error />
-  </div>
+    <div class="flex flex-col">
+        <legend v-if="label" class="fieldset-legend" :class="{ 'text-error': error }">{{ $t(label) }}</legend>
+        <slot></slot>
+        <FieldError :error />
+    </div>
 </template>

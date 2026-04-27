@@ -26,7 +26,10 @@
         "new": "Nouveau",
         "update": "Modifier",
         "confirm": "Confirmer",
-        "filter": "Filtrer"
+        "filter": "Filtrer",
+        "back": "Retour",
+        "previous": "Precédent",
+        "next": "Suivant"
     },
     "confirmation": {
         "remove": {
