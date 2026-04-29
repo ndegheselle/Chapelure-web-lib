@@ -1,3 +1,4 @@
+import type { FilterGroup } from "@chapelure/api/filters";
 import type { BaseSystemFields } from "@shared/types.g";
 export type BaseEntity = BaseSystemFields;
 
@@ -43,5 +44,5 @@ export interface IDataCrud<TResponse extends BaseEntity> {
     getById(id: string): Promise<TResponse | null>;
     getAll(): Promise<TResponse[]>;
     getList(options: PaginationOptions): Promise<Paginated<TResponse>>;
-    search(search: string, options: PaginationOptions): Promise<Paginated<TResponse>>;
+    filter(group: FilterGroup, options: PaginationOptions): Promise<Paginated<TResponse>>;
 }

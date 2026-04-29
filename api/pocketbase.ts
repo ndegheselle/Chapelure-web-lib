@@ -1,4 +1,6 @@
 import { type IDataCrud, Paginated, PaginationOptions } from "@chapelure/api/crud";
+import { FilterLogical, FilterOperator, type FilterGroup } from "@chapelure/api/filters";
+import { filterGroupToPocketBase } from "@chapelure/api/pocketbase.filters";
 import type { BaseSystemFields, TypedPocketBase } from '@shared/types.g.ts';
 import PocketBase from 'pocketbase';
 
@@ -30,7 +32,6 @@ export class PocketbaseCrud<TResponse extends BaseSystemFields> implements IData
 
     constructor(
         protected readonly collectionName: string,
-        protected readonly searchFields: string[] | undefined = undefined,
         protected readonly expands: string[] | undefined = undefined,
     ) { }
 
@@ -65,15 +66,12 @@ export class PocketbaseCrud<TResponse extends BaseSystemFields> implements IData
         return new Paginated<TResponse>(result.items, result.totalItems, options);
     }
 
-    async search(search: string, options: PaginationOptions): Promise<Paginated<TResponse>> {
-        if (!this.searchFields || this.searchFields.length === 0)
-            return this.getList(options);
-
-        const filter = this.searchFields.map(field => `${field}~'${search}'`).join(" || ");
+    async filter(group: FilterGroup, options: PaginationOptions): Promise<Paginated<TResponse>> {
+        const filter = filterGroupToPocketBase(group);
         const result = await this.collection.getList<TResponse>(options.page, options.perPage, {
             expand: this.expands?.join(","),
             sort: options.sortBy ? `${options.sortDirection}${options.sortBy}` : undefined,
-            filter: filter,
+            filter: filter || undefined,
         });
         return new Paginated<TResponse>(result.items, result.totalItems, options);
     }
