@@ -19,21 +19,18 @@ export interface NumberRange {
 export interface NumberFilter {
     type: typeof FilterType.Number;
     label: string;
-    value: NumberRange;
 }
 
 export interface ChoiceFilter {
     type: typeof FilterType.Choice;
     label: string;
     availables: FilterChoice[];
-    value: string;
 }
 
 export interface ChoicesFilter {
     type: typeof FilterType.Choices;
     label: string;
     availables: FilterChoice[];
-    values: string[];
 }
 
 export type Filter = NumberFilter | ChoiceFilter | ChoicesFilter;
