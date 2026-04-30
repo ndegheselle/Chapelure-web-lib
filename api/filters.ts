@@ -1,24 +1,41 @@
+/**
+ * Type of a filter field
+ */
 export const FilterType = {
     String: 'string',
     Number: 'number',
-    Range: 'range',
     Choice: 'choice',
-    Choices: 'choices',
 } as const;
 export type FilterType = typeof FilterType[keyof typeof FilterType];
 
+/**
+ * Kind of binding for a filter definition
+ */
+export const BindingKind = {
+    Single: 'single',
+    Range: 'range',
+} as const;
+export type BindingKind = typeof BindingKind[keyof typeof BindingKind];
+
 export interface SingleBinding<T> {
-    kind: 'single';
+    kind: typeof BindingKind.Single;
     key: keyof T;
 }
 
 export interface RangeBinding<T> {
-    kind: 'range';
+    kind: typeof BindingKind.Range;
     keyMin: keyof T;
     keyMax: keyof T;
 }
+
+/**
+ * Binding of a filter definition, one filter can be binded to multiple fields
+ */
 export type FieldBinding<T> = SingleBinding<T> | RangeBinding<T>;
 
+/**
+ * Filter choice item for choice filters
+ */
 export interface FilterChoice {
     label: string;
     value: any;
@@ -29,31 +46,20 @@ interface FilterDefinitionBase<T> {
     binding: FieldBinding<T>;
 }
 
-export interface StringFilterDefinition<T> extends FilterDefinitionBase<T> {
-    type: typeof FilterType.String;
-    binding: SingleBinding<T>;
-}
-
-export interface NumberFilterDefinition<T> extends FilterDefinitionBase<T> {
+export interface ValueFilterDefinition<T> extends FilterDefinitionBase<T> {
     type: typeof FilterType.Number;
-    binding: SingleBinding<T>;
-}
-
-export interface RangeFilterDefinition<T> extends FilterDefinitionBase<T> {
-    type: typeof FilterType.Range;
-    binding: RangeBinding<T>;   // enforced: must be a range binding
+    binding: FieldBinding<T>;
 }
 
 export interface ChoiceFilterDefinition<T> extends FilterDefinitionBase<T> {
-    type: typeof FilterType.Choice | typeof FilterType.Choices;
+    type: typeof FilterType.Choice;
     binding: SingleBinding<T>;
+    multiple?: boolean;
     availables: FilterChoice[];
 }
 
 export type FilterDefinition<T> =
-    | StringFilterDefinition<T>
-    | NumberFilterDefinition<T>
-    | RangeFilterDefinition<T>
+    | ValueFilterDefinition<T>
     | ChoiceFilterDefinition<T>;
 
 // --- Filters values ---
