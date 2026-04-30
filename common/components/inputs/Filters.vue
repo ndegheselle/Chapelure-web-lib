@@ -1,18 +1,21 @@
 <script setup lang="ts" generic="T">
-import type { FilterDefinition } from '@chapelure/api/filters';
+import type { FilterDefinition, FilterGroup } from '@chapelure/api/filters';
 import Modal from '@chapelure/common/components/popups/Modal.vue';
 import { useDeferredModal } from '@chapelure/common/composables/popups/useModal';
 import { ChevronRightIcon, FunnelIcon } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed } from 'vue';
 import FiltersForm from './FiltersForm.vue';
 
-const numberOfAdditionalsFilters = ref(0);
 const controller = useDeferredModal();
 
 const { numberDisplay = 3 } = defineProps<{
     numberDisplay?: number,
     filters: FilterDefinition<T>[],
 }>();
+
+const group = defineModel<FilterGroup>({ required: true });
+
+const numberOfActiveFilters = computed(() => group.value.filters.length);
 </script>
 
 <template>
@@ -24,13 +27,13 @@ const { numberDisplay = 3 } = defineProps<{
         <button class="btn btn-sm ms-auto" @click="() => controller.show()">
             <FunnelIcon />
             {{ $t('actions.filter') }}
-            <div v-if="numberOfAdditionalsFilters > 0" class="badge badge-sm badge-primary">{{ numberOfAdditionalsFilters }}</div>
+            <div v-if="numberOfActiveFilters > 0" class="badge badge-sm badge-primary">{{ numberOfActiveFilters }}</div>
         </button>
     </section>
     <Modal :controller="controller">
         <template #title>
             TEST
         </template>
-        <FiltersForm :filters="filters" />
+        <FiltersForm :filters="filters" v-model="group" />
     </Modal>
 </template>
