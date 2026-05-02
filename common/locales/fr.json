@@ -40,6 +40,8 @@
     "data": {
         "noResult": "Aucun résultat",
         "created": "Crée avec succès !",
+        "minimum": "Min",
+        "maximum": "Max",
         "updated": "Mis à jour avec succès !",
         "pagination": {
             "first": "Première page",

@@ -32,7 +32,7 @@ const numberOfActiveFilters = computed(() => group.value.filters.length);
     </section>
     <Modal :controller="controller">
         <template #title>
-            TEST
+            {{  $t('actions.filter') }}
         </template>
         <FiltersForm :filters="filters" v-model="group" />
     </Modal>

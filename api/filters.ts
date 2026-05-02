@@ -13,31 +13,31 @@ export const FilterLogical = {
 } as const;
 export type FilterLogical = typeof FilterLogical[keyof typeof FilterLogical];
 
-export interface Filter {
-    key: string;
+export interface Filter<T> {
+    key: keyof T;
     value: any;
     operator: FilterOperator;
     isNegated: boolean;
     combine: FilterLogical;
 }
 
-export interface FilterGroup {
-    filters: (Filter | FilterGroup)[];
+export interface FilterGroup<T> {
+    filters: (Filter<T> | FilterGroup<T>)[];
     combine: FilterLogical;
 }
 
-export function createFilter(filter: Partial<Filter>): Filter {
+export function createFilter<T>(filter: Partial<Filter<T>>): Filter<T> {
     return {
         operator: FilterOperator.Contains,
         combine: FilterLogical.And,
         isNegated: false,
         ...filter,
-    } as Filter;
+    } as Filter<T>;
 }
 
-export function createGroup(group: Partial<FilterGroup>): FilterGroup {
+export function createGroup<T>(group: Partial<FilterGroup<T>>): FilterGroup<T> {
     return {
         combine: FilterLogical.And,
         ...group,
-    } as FilterGroup;
+    } as FilterGroup<T>;
 }
