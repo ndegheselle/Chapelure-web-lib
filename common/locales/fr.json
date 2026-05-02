@@ -29,7 +29,13 @@
         "filter": "Filtrer",
         "back": "Retour",
         "previous": "Precédent",
-        "next": "Suivant"
+        "next": "Suivant",
+        "create": "Créer"
+    },
+    "inputs": {
+        "image": {
+            "upload": "<b>Choisir</b> ou glisser une image ici"
+        }
     },
     "confirmation": {
         "remove": {
