@@ -34,7 +34,7 @@
     },
     "inputs": {
         "image": {
-            "upload": "<b>Choisir</b> ou glisser une image ici"
+            "upload": "Choisir ou glisser une image ici"
         }
     },
     "confirmation": {
