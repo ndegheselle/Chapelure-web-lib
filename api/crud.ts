@@ -25,12 +25,12 @@ export class PaginationOptions {
 }
 
 export class Paginated<T> {
-    data: T[];
+    items: T[];
     total: number;
     options: PaginationOptions;
 
-    constructor(data: T[], total: number, options: PaginationOptions) {
-        this.data = data;
+    constructor(items: T[], total: number, options: PaginationOptions) {
+        this.items = items;
         this.total = total;
         this.options = options;
     }
@@ -44,5 +44,5 @@ export interface IDataCrud<TResponse extends BaseEntity> {
     getById(id: string): Promise<TResponse | null>;
     getAll(): Promise<TResponse[]>;
     getList(options: PaginationOptions): Promise<Paginated<TResponse>>;
-    filter(group: FilterGroup, options: PaginationOptions): Promise<Paginated<TResponse>>;
+    filter(group: FilterGroup<TResponse>, options: PaginationOptions): Promise<Paginated<TResponse>>;
 }

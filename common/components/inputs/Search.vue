@@ -1,33 +1,17 @@
 <script setup lang="ts">
 import { debounce } from '@chapelure/common/utils/debounce';
 import { SearchIcon, XIcon } from 'lucide-vue-next';
-import { computed, ref, watch } from 'vue';
 
 const props = withDefaults(defineProps<{
-    modelValue?: string;
     delay?: number;
 }>(), {
     delay: 300,
 });
+const model = defineModel<string>();
 
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: string): void;
     (e: 'search', value: string): void;
 }>();
-
-const internalValue = ref(props.modelValue ?? '');
-
-watch(() => props.modelValue, (val) => {
-    internalValue.value = val ?? '';
-});
-
-const model = computed({
-    get: () => internalValue.value,
-    set: (value) => {
-        internalValue.value = value;
-        emit('update:modelValue', value);
-    },
-});
 
 const emitSearch = props.delay
     ? debounce((value: string) => emit('search', value), props.delay)

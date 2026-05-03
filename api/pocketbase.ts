@@ -1,5 +1,5 @@
 import { type IDataCrud, Paginated, PaginationOptions } from "@chapelure/api/crud";
-import { FilterLogical, FilterOperator, type FilterGroup } from "@chapelure/api/filters";
+import { type FilterGroup } from "@chapelure/api/filters";
 import { filterGroupToPocketBase } from "@chapelure/api/pocketbase.filters";
 import type { BaseSystemFields, TypedPocketBase } from '@shared/types.g.ts';
 import PocketBase from 'pocketbase';
@@ -66,7 +66,7 @@ export class PocketbaseCrud<TResponse extends BaseSystemFields> implements IData
         return new Paginated<TResponse>(result.items, result.totalItems, options);
     }
 
-    async filter(group: FilterGroup, options: PaginationOptions): Promise<Paginated<TResponse>> {
+    async filter(group: FilterGroup<TResponse>, options: PaginationOptions): Promise<Paginated<TResponse>> {
         const filter = filterGroupToPocketBase(group);
         const result = await this.collection.getList<TResponse>(options.page, options.perPage, {
             expand: this.expands?.join(","),

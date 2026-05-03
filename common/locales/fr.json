@@ -30,7 +30,8 @@
         "back": "Retour",
         "previous": "Precédent",
         "next": "Suivant",
-        "create": "Créer"
+        "create": "Créer",
+        "reset": "Réinitialiser"
     },
     "inputs": {
         "image": {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next';
 import { computed, watch } from 'vue';
 
 const capacityOptions = [5, 10, 25, 50, 100];
@@ -33,32 +34,32 @@ watch(
 <template>
     <div class="flex w-full">
         <div class="join">
-            <button class="join-item btn btn-sm"
+            <button class="join-item btn btn-sm btn-square"
                     :class="{ 'btn-disabled': page <= 1 }"
                     :aria-label="$t('data.pagination.first')"
                     @click="page = 1">
-                <i class="fa-solid fa-backward-step"></i>
+                    <ChevronFirstIcon />
             </button>
-            <button class="join-item btn btn-sm"
+            <button class="join-item btn btn-sm btn-square"
                     :class="{ 'btn-disabled': page <= 1 }"
                     :aria-label="$t('data.pagination.previous')"
                     @click="page = page - 1">
-                <i class="fa-solid fa-chevron-left"></i>
+                    <ChevronLeftIcon />
             </button>
             <span class="join-item btn btn-sm">
                 {{ page }} / {{ totalPages }}
             </span>
-            <button class="join-item btn btn-sm"
+            <button class="join-item btn btn-sm btn-square"
                     :class="{ 'btn-disabled': page >= totalPages }"
                     :aria-label="$t('data.pagination.next')"
                     @click="page = page + 1">
-                <i class="fa-solid fa-chevron-right"></i>
+                    <ChevronRightIcon />
             </button>
-            <button class="join-item btn btn-sm"
+            <button class="join-item btn btn-sm btn-square"
                     :class="{ 'btn-disabled': page >= totalPages }"
                     :aria-label="$t('data.pagination.last')"
                     @click="page = totalPages">
-                <i class="fa-solid fa-forward-step"></i>
+                    <ChevronLastIcon />
             </button>
         </div>
 
