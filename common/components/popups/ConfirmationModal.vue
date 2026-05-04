@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useConfirmation } from '@chapelure/common/composables/popups/useConfirmation';
-import { onMounted } from 'vue';
 import Modal from '@chapelure/common/components/popups/Modal.vue';
-import { useDeferredModal } from '@chapelure/common/composables/popups/useModal';
+import { useConfirmation } from '@chapelure/common/composables/popups/useConfirmation';
+import { useModal } from '@chapelure/common/composables/popups/useModal';
+import { onMounted } from 'vue';
 
 const confirmation = useConfirmation();
-const controller = useDeferredModal();
+const controller = useModal();
 
 onMounted(() => {
     confirmation.registerModal(controller);

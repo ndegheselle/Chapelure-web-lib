@@ -7,6 +7,9 @@ export enum SortDirection {
     DESC = '-',
 }
 
+/**
+ * Pagination options for list. Page number starts from 1.
+ */
 export class PaginationOptions {
     /**
      * Current page number (starting from 1)
@@ -24,6 +27,9 @@ export class PaginationOptions {
     }
 }
 
+/**
+ * Paginated items with total count and pagination options used for the query.
+ */
 export class Paginated<T> {
     items: T[];
     total: number;

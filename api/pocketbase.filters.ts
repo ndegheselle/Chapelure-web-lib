@@ -1,4 +1,15 @@
-import { FilterLogical, FilterOperator, type Filter, type FilterGroup } from "@chapelure/api/filters";
+import { FilterLogical, FilterOperator, isFilterGroup, type Filter, type FilterGroup } from "@chapelure/api/filters";
+
+const operatorMap: Record<FilterOperator, string> = {
+  [FilterOperator.Equals]: "=",
+  [FilterOperator.Contains]: "~",
+  [FilterOperator.GreaterThan]: ">",
+  [FilterOperator.LessThan]: "<",
+};
+
+function filterOperatorToPocketBase(operator: FilterOperator): string {
+  return operatorMap[operator];
+}
 
 function filterValueToString(value: any): string {
     if (value === null) return 'null';
@@ -7,26 +18,8 @@ function filterValueToString(value: any): string {
     return `'${String(value).replace(/'/g, "\\'")}'`;
 }
 
-function filterOperatorToPocketBase(operator: FilterOperator, isNegated: boolean, isAny = false): string {
-    const prefix = isAny ? '?' : '';
-    switch (operator) {
-        case FilterOperator.Equals:
-            return isNegated ? `${prefix}!=` : `${prefix}=`;
-        case FilterOperator.Contains:
-            return isNegated ? `${prefix}!~` : `${prefix}~`;
-        case FilterOperator.GreaterThan:
-            return isNegated ? `${prefix}<=` : `${prefix}>`;
-        case FilterOperator.LessThan:
-            return isNegated ? `${prefix}>=` : `${prefix}<`;
-    }
-}
-
 function logicalToPocketBase(logical: FilterLogical): string {
     return logical === FilterLogical.Or ? '||' : '&&';
-}
-
-function isFilterGroup<T>(filter: Filter<T> | FilterGroup<T>): filter is FilterGroup<T> {
-    return 'filters' in filter;
 }
 
 export function filterToPocketBase<T>(filter: Filter<T>): string {
@@ -36,7 +29,7 @@ export function filterToPocketBase<T>(filter: Filter<T>): string {
     const parts = values.map((v: any) => {
         // The '?' prefix in PocketBase allows searching within multi-valued fields (arrays/relations)
         // or signifies "any" match when the right side is part of a list expansion.
-        const operator = filterOperatorToPocketBase(filter.operator, filter.isNegated, isArrayValue);
+        const operator = filterOperatorToPocketBase(filter.operator);
         const valueStr = filterValueToString(v);
         return `${String(filter.key)}${operator}${valueStr}`;
     });

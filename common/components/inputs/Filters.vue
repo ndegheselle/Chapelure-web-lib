@@ -1,12 +1,12 @@
 <script setup lang="ts" generic="T">
 import type { FilterDefinition, FilterGroup } from '@chapelure/api/filters';
 import Modal from '@chapelure/common/components/popups/Modal.vue';
-import { useDeferredModal } from '@chapelure/common/composables/popups/useModal';
+import { useModal } from '@chapelure/common/composables/popups/useModal';
 import { ChevronRightIcon, FunnelIcon } from 'lucide-vue-next';
 import { computed } from 'vue';
 import FiltersForm from './FiltersForm.vue';
 
-const controller = useDeferredModal();
+const controller = useModal();
 
 const { numberDisplay = 3 } = defineProps<{
     numberDisplay?: number,

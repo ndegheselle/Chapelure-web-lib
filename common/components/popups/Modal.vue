@@ -1,10 +1,10 @@
 <!-- Example of a reusable modal -->
 <script setup lang="ts" generic="T = boolean">
-import { useTemplateRef, watch } from 'vue';
+import { useModal, type IModalController } from '@chapelure/common/composables/popups/useModal';
 import { CheckIcon, XIcon } from 'lucide-vue-next';
-import { useDeferredModal, type IModalController } from '@chapelure/common/composables/popups/useModal';
+import { useTemplateRef, watch } from 'vue';
 
-const { controller = useDeferredModal(), withActions = true } = defineProps<{
+const { controller = useModal(), withActions = true } = defineProps<{
     withActions?: boolean,
     controller?: IModalController<T>
 }>();

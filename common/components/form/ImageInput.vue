@@ -38,7 +38,6 @@ function onDrop(e: DragEvent) {
 }
 
 function onChange() {
-    console.log('Selected file:', fileInput.value, fileInput.value?.files, fileInput.value?.files?.length);
     if (!fileInput.value || !fileInput.value.files || fileInput.value.files.length === 0)
         return;
 
