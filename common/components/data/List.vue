@@ -18,8 +18,8 @@ defineSlots<{
     <!-- List Container -->
     <ul class="list bg-base-100 rounded-box border border-base-content/5">
         <!-- Empty State -->
-        <li class="p-4 opacity-30 tracking-wide flex my-auto" v-if="!items?.length">
-            <div class="flex mx-auto">
+        <li class="p-4 opacity-30 tracking-wide my-auto mx-auto" v-if="!items?.length">
+            <div class="flex ">
                 <CircleQuestionMarkIcon class="mr-2 my-auto" />
                 <span>{{ $t('data.noResult') }}</span>
             </div>
