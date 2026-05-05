@@ -4,6 +4,10 @@ defineSlots<{
     summary(): any;
 }>();
 
+const { isFullWidth } = defineProps<{
+    isFullWidth?: boolean;
+}>();
+
 const model = defineModel<boolean>({ default: false });
 
 function closeOnInteractible(event: MouseEvent)
@@ -15,12 +19,14 @@ function closeOnInteractible(event: MouseEvent)
 </script>
 
 <template>
-    <details v-click-outside="() => model = false"
-             class="dropdown"
-             :open="model"
-             @toggle="model = ($event.target as HTMLDetailsElement).open" >
+    <details
+        v-click-outside="() => model = false"
+        class="dropdown"
+        :open="model"
+        @toggle="model = ($event.target as HTMLDetailsElement).open"
+    >
         <slot name="summary" />
-        <div class="dropdown-content bg-base-200 rounded-box shadow" @click="closeOnInteractible">
+        <div class="dropdown-content bg-base-100 rounded-box shadow" :class="{'right-0 left-0': isFullWidth}" @click="closeOnInteractible">
             <slot />
         </div>
     </details>
