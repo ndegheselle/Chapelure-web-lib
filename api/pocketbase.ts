@@ -1,8 +1,8 @@
-import { type IDataCrud, Paginated, PaginationOptions } from "@chapelure/api/crud";
+import { type BaseEntity, type IDataCrud, Paginated, PaginationOptions } from "@chapelure/api/crud";
 import { type FilterGroup } from "@chapelure/api/filters";
 import { filterGroupToPocketBase } from "@chapelure/api/pocketbase.filters";
-import type { BaseSystemFields, TypedPocketBase } from '@shared/types.g.ts';
-import PocketBase from 'pocketbase';
+import type { TypedPocketBase } from '@shared/types.g.ts';
+import PocketBase, { RecordService } from 'pocketbase';
 
 let pb: TypedPocketBase | null;
 export function initDatabase(url: string) {
@@ -23,56 +23,68 @@ export function usePocketBase() {
     }
 }
 
-export class PocketbaseCrud<TResponse extends BaseSystemFields> implements IDataCrud<TResponse> {
+export interface IPocketBaseCrud<TResponse extends BaseEntity> extends IDataCrud<TResponse>
+{
+    collection: RecordService<TResponse>;
+    pb: TypedPocketBase;
+}
 
-    protected get collection() {
-        const { pb } = usePocketBase();
-        return pb.collection(this.collectionName);
+
+export function usePocketBaseCrud<TResponse extends BaseEntity>(collectionName: string,  expands: string[] | undefined = undefined) : IPocketBaseCrud<TResponse>
+{
+    const { pb } = usePocketBase();
+    const collection = pb.collection(collectionName);
+
+    async function create(data: TResponse): Promise<TResponse> {
+        return await collection.create<TResponse>(data, { expand: expands?.join(",") });
     }
 
-    constructor(
-        protected readonly collectionName: string,
-        protected readonly expands: string[] | undefined = undefined,
-    ) { }
-
-    async create(data: TResponse): Promise<TResponse> {
-        return await this.collection.create<TResponse>(data, { expand: this.expands?.join(",") });
+    async function update(id: string, data: Partial<TResponse>): Promise<TResponse> {
+        return await collection.update<TResponse>(id, data, { expand: expands?.join(",") });
     }
 
-    async update(id: string, data: Partial<TResponse>): Promise<TResponse> {
-        return await this.collection.update<TResponse>(id, data, { expand: this.expands?.join(",") });
+    async function remove(id: string): Promise<void> {
+        await collection.delete(id);
     }
 
-    async delete(id: string): Promise<void> {
-        await this.collection.delete(id);
+    async function getById(id: string): Promise<TResponse | null> {
+        return await collection.getOne<TResponse>(id, { expand: expands?.join(",") });
     }
 
-    async getById(id: string): Promise<TResponse | null> {
-        return await this.collection.getOne<TResponse>(id, { expand: this.expands?.join(",") });
-    }
-
-    async getAll(): Promise<TResponse[]> {
-        return await this.collection.getFullList<TResponse>({
-            expand: this.expands?.join(",")
+    async function getAll(): Promise<TResponse[]> {
+        return await collection.getFullList<TResponse>({
+            expand: expands?.join(",")
         });
     }
 
-    async getList(options: PaginationOptions): Promise<Paginated<TResponse>> {
-        const result = await this.collection.getList<TResponse>(options.page, options.perPage, {
-            expand: this.expands?.join(","),
+    async function getList(options: PaginationOptions): Promise<Paginated<TResponse>> {
+        const result = await collection.getList<TResponse>(options.page, options.perPage, {
+            expand: expands?.join(","),
             sort: options.sortBy ? `${options.sortDirection}${options.sortBy}` : undefined,
         });
 
         return new Paginated<TResponse>(result.items, result.totalItems, options);
     }
 
-    async filter(group: FilterGroup<TResponse>, options: PaginationOptions): Promise<Paginated<TResponse>> {
+    async function filter(group: FilterGroup<TResponse>, options: PaginationOptions): Promise<Paginated<TResponse>> {
         const filter = filterGroupToPocketBase(group);
-        const result = await this.collection.getList<TResponse>(options.page, options.perPage, {
-            expand: this.expands?.join(","),
+        const result = await collection.getList<TResponse>(options.page, options.perPage, {
+            expand: expands?.join(","),
             sort: options.sortBy ? `${options.sortDirection}${options.sortBy}` : undefined,
             filter: filter || undefined,
         });
         return new Paginated<TResponse>(result.items, result.totalItems, options);
+    }
+
+    return {
+        create,
+        update,
+        remove,
+        getAll,
+        getById,
+        getList,
+        filter,
+        collection,
+        pb
     }
 }

@@ -28,25 +28,35 @@ defineSlots<{
 </script>
 
 <template>
-    <dialog ref="dialog" class="modal">
-        <div class="modal-box">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click="() => controller.cancel()">
-                <XIcon />
-            </button>
-            <h3 class="text-lg font-bold">
-                <slot name="title" />
-            </h3>
+    <dialog ref="dialog"
+            class="modal">
+        <div class="modal-box flex flex-col">
 
-            <slot />
+            <div class="flex">
+                <h3 class="text-lg font-bold">
+                    <slot name="title" />
+                </h3>
+                <button class="btn btn-sm btn-circle btn-ghost ms-auto"
+                        @click="() => controller.cancel()">
+                    <XIcon />
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto">
+                <slot />
+            </div>
 
             <!-- Actions -->
-            <div class="modal-action" v-if="withActions">
+            <div class="modal-action"
+                 v-if="withActions">
                 <slot name="actions">
-                    <button class="btn" @click="() => controller.cancel()">
+                    <button class="btn"
+                            @click="() => controller.cancel()">
                         <XIcon />
                         {{ $t("actions.cancel") }}
                     </button>
-                    <button class="btn btn-primary" @click="() => controller.confirm(true as any)">
+                    <button class="btn btn-primary"
+                            @click="() => controller.confirm(true as any)">
                         <CheckIcon />
                         {{ $t("actions.confirm") }}
                     </button>

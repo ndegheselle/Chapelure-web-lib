@@ -5,6 +5,7 @@ const operatorMap: Record<FilterOperator, string> = {
   [FilterOperator.Contains]: "~",
   [FilterOperator.GreaterThan]: ">",
   [FilterOperator.LessThan]: "<",
+  [FilterOperator.AnyEquals]: "?=",
 };
 
 function filterOperatorToPocketBase(operator: FilterOperator): string {

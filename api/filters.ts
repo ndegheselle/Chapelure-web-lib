@@ -5,7 +5,9 @@ export const FilterOperator = {
     Equals: 'equals',
     Contains: 'contains',
     GreaterThan: 'greaterThan',
-    LessThan: 'lessThan'
+    LessThan: 'lessThan',
+
+    AnyEquals: 'anyEquals'
 } as const;
 export type FilterOperator = typeof FilterOperator[keyof typeof FilterOperator];
 

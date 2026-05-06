@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T">
 import Dropdown from '@chapelure/common/components/popups/Dropdown.vue';
-import { SearchIcon, XIcon, CircleQuestionMarkIcon } from 'lucide-vue-next';
+import { CircleQuestionMarkIcon, XIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 
 const { items = [], displayKey } = defineProps<{
@@ -8,7 +8,7 @@ const { items = [], displayKey } = defineProps<{
     displayKey?: keyof T
 }>();
 
-const selected = defineModel<T[]>('selected', { default: () => [] });
+const selected = defineModel<T[]>({ default: () => [] });
 
 const availableItems = computed(() => items.filter(
     x => selected.value.indexOf(x) === -1 && getDisplay(x).toLowerCase().includes(search.value.toLowerCase())
@@ -49,7 +49,6 @@ function openDropdown() {
                 <div class="flex-1 min-w-32 flex items-center">
                     <input type="text" class="w-full outline-hidden" :placeholder="$t('actions.search')"
                         @focus="openDropdown" v-model="search" />
-                    <SearchIcon class="opacity-50" />
                 </div>
             </summary>
         </template>
