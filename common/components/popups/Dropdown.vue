@@ -26,7 +26,7 @@ function closeOnInteractible(event: MouseEvent)
         @toggle="model = ($event.target as HTMLDetailsElement).open"
     >
         <slot name="summary" />
-        <div class="dropdown-content bg-base-100 rounded-box shadow" :class="{'right-0 left-0': isFullWidth}" @click="closeOnInteractible">
+        <div class="dropdown-content bg-base-100 rounded-box shadow-md" :class="{'right-0 left-0': isFullWidth}" @click="closeOnInteractible">
             <slot />
         </div>
     </details>
@@ -39,5 +39,9 @@ details>summary {
 
 details>summary::-webkit-details-marker {
     display: none;
+}
+/* Fix dropdown position in modal with scroll */
+.modal .dropdown-content  {
+    position:fixed;
 }
 </style>

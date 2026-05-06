@@ -30,7 +30,7 @@ defineSlots<{
 <template>
     <dialog ref="dialog"
             class="modal">
-        <div class="modal-box flex flex-col">
+        <div class="modal-box">
 
             <div class="flex">
                 <h3 class="text-lg font-bold">
@@ -42,7 +42,7 @@ defineSlots<{
                 </button>
             </div>
 
-            <div class="flex-1 overflow-y-auto">
+            <div class="overflow-y-auto">
                 <slot />
             </div>
 
