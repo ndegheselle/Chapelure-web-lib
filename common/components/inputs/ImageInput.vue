@@ -68,7 +68,7 @@ function onChange() {
             <input @change="onChange" ref="fileInput" type="file" :accept="accept ?? 'image/*'"
                 class="file-input w-full" />
             <button v-if="fileInput?.value" class="btn btn-ghost btn-square absolute right-0" @click="clearFile">
-                <XIcon class="icon-sm" />
+                <XIcon />
             </button>
         </div>
     </div>

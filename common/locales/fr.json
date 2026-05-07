@@ -31,7 +31,8 @@
         "previous": "Precédent",
         "next": "Suivant",
         "create": "Créer",
-        "reset": "Réinitialiser"
+        "reset": "Réinitialiser",
+        "browse": "Parcourir"
     },
     "inputs": {
         "image": {
