@@ -21,7 +21,7 @@ defineSlots<{
         <li class="p-4 opacity-30 tracking-wide my-auto mx-auto" v-if="!items?.length">
             <div class="flex ">
                 <CircleQuestionMarkIcon class="mr-2 my-auto" />
-                <span>{{ $t('data.noResult') }}</span>
+                <span>{{ $t('data.noData') }}</span>
             </div>
         </li>
 

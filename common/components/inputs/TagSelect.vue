@@ -59,7 +59,7 @@ function openDropdown() {
             <li class="opacity-30" v-if="!availableItems.length">
                 <div class="flex justify-center">
                     <CircleQuestionMarkIcon  />
-                    <span>{{ $t('data.noResult') }}</span>
+                    <span>{{ $t('data.noData') }}</span>
                 </div>
             </li>
         </ul>

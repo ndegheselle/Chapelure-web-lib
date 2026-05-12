@@ -116,7 +116,7 @@ onMounted(refresh);
                     </template>
                     <tr v-else>
                         <td colspan="100" class="text-center opacity-60 py-6">
-                            {{ $t('data.noResult') }}
+                            {{ $t('data.noData') }}
                         </td>
                     </tr>
                 </tbody>

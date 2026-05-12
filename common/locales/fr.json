@@ -46,7 +46,7 @@
         }
     },
     "data": {
-        "noResult": "Aucun résultat",
+        "noData": "Aucunne données",
         "created": "Crée avec succès !",
         "minimum": "Min",
         "maximum": "Max",
