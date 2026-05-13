@@ -9,7 +9,6 @@ const { accept = 'image/*', maxNumber = 1 } = defineProps<{
 
 const fileInput = ref<HTMLInputElement | null>(null);
 const isDragging = ref(false);
-const preview = ref<string | null>(null);
 const files = ref<File[]>([]);
 
 const PREVIEWABLE_TYPES = new Set([
@@ -91,7 +90,7 @@ function removeFile(index: number) {
 
 <template>
     <div class="flex flex-col">
-        <div v-if="!preview"
+        <div
              class="rounded-box border border-dashed border-base-300 h-32 flex flex-col justify-center items-center cursor-pointer transitions transition-colors"
              :class="{ 'border-primary bg-base-200': isDragging, 'hover:border-primary': !isDragging }"
              @click="triggerFileSelect"
@@ -108,11 +107,6 @@ function removeFile(index: number) {
                 <FolderOpenIcon />
                 {{ $t('inputs.file.upload.browse') }}
             </button>
-        </div>
-        <div v-else
-             class="h-31 border border-base-300 rounded-box p-0.5">
-            <img :src="preview"
-                 class="h-full w-full object-cover rounded-box" />
         </div>
         <input @change="onChange"
                ref="fileInput"
