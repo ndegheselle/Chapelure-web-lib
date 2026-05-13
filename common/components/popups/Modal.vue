@@ -30,8 +30,7 @@ defineSlots<{
 <template>
     <dialog ref="dialog"
             class="modal">
-        <div class="modal-box">
-
+        <div class="modal-box max-w-5xl">
             <div class="flex">
                 <h3 class="text-lg font-bold">
                     <slot name="title" />

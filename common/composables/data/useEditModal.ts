@@ -5,6 +5,12 @@ import { useValidationErrors } from '@chapelure/common/utils/dev';
 import { computed, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+/**
+ * Edit modal logic to edit and create
+ * @param modal controller of the modal
+ * @param crud crud service to save and update the data
+ * @returns 
+ */
 export function useEditModal<T extends BaseEntity>(modal: IModalController<T>, crud: IDataCrud<T>) {
     const alert = useAlert();
 

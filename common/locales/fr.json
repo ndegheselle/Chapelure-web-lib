@@ -35,8 +35,11 @@
         "browse": "Parcourir"
     },
     "inputs": {
-        "image": {
-            "upload": "Choisir ou glisser une image ici"
+        "file": {
+            "upload": {
+                "label": "Choisir un fichier ou glisser-déposser ici",
+                "browse": "Parcourir"
+            }
         }
     },
     "confirmation": {
