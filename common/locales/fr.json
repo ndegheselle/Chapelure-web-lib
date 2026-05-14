@@ -38,7 +38,9 @@
         "file": {
             "upload": {
                 "label": "Choisir un fichier ou glisser-déposser ici",
-                "browse": "Parcourir"
+                "browse": "Parcourir",
+                "unsuported": "'{name}' à un format non supporté.",
+                "exceed": "'{name}' dépasse la limite de {maxSize} MB ({size})"
             }
         }
     },

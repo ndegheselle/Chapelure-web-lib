@@ -13,7 +13,7 @@ const dialog = useTemplateRef<HTMLDialogElement>('dialog');
 
 watch(controller.isShown, (isShown) => {
     if (isShown) {
-        dialog.value?.showModal();
+        dialog.value?.show();
     } else {
         dialog.value?.close();
     }
