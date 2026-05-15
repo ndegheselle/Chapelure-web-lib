@@ -12,9 +12,10 @@ const { accept = 'image/*', maxFilesNumber = 1, maxMbSize = 2 } = defineProps<{
     maxMbSize?: number;
 }>();
 
+const files = defineModel<File[]>({default: []});
+
 const fileInput = ref<HTMLInputElement | null>(null);
 const isDragging = ref(false);
-const files = ref<File[]>([]);
 const alert = useAlert();
 
 const PREVIEWABLE_TYPES = new Set([
@@ -111,12 +112,12 @@ function removeFile(index: number) {
 
 <template>
     <div class="flex flex-col">
-        <div class="rounded-box border border-dashed border-base-300 h-32 flex flex-col justify-center items-center cursor-pointer transitions transition-colors"
+        <div class="bg-base-100 rounded-box p-3 border border-dashed border-base-content/20 flex flex-col justify-center items-center cursor-pointer transitions transition-colors"
             :class="{ 'border-primary bg-base-200': isDragging, 'hover:border-primary': !isDragging }"
             @click="triggerFileSelect" @dragover="onDragOver" @dragleave="isDragging = false" @drop="onDrop">
             <UploadIcon class="icon-lg opacity-50" />
             <b>{{ $t('inputs.file.upload.label') }}</b>
-            <div v-if="$slots.constraints" class="label text-sm opacity-60">
+            <div v-if="$slots.constraints" class="text-center text-sm opacity-60 wrap-break-word">
                 <slot name="constraints" />
             </div>
             <button class="btn btn-sm mt-1">
@@ -126,7 +127,7 @@ function removeFile(index: number) {
         </div>
         <input @change="onChange" ref="fileInput" type="file" :accept="accept" class="hidden"
             :multiple="maxFilesNumber > 1" />
-        <ul class="list bg-base-200 rounded-box mt-1" v-if="files.length">
+        <ul class="list bg-base-200 shadow rounded-box mt-1" v-if="files.length">
             <li v-for="(file, index) in files" class="list-row p-1 items-center">
                 <img v-if="canPreviewAsImage(file)" :src="toLink(file)" class="size-10 rounded-box" />
                 <div v-else class="size-10 flex">

@@ -15,17 +15,18 @@ watchEffect(() => {
 </script>
 
 <template>
-    <dialog ref="dialogRef" class="toast-dialog z-10"> 
-        <div class="toast">
-            <div role="alert" class="alert" v-for="alert in alerts" :key="alert.id" :class="{
-                'alert-warning alert-dash': alert.type === EnumAlertType.Debug,
-                'alert-warning': alert.type === EnumAlertType.Warning,
-                'alert-error': alert.type === EnumAlertType.Error,
-                'alert-success': alert.type === EnumAlertType.Success
-            }">
+    <dialog ref="dialogRef" class="z-9999"> 
+        <TransitionGroup name="alert" tag="div" class="toast stack stack-top">
+            <div role="alert" class="alert" 
+                v-for="alert in alerts" :key="alert.id" 
+                :class="{
+                    'alert-warning alert-dash': alert.type === EnumAlertType.Debug,
+                    'alert-warning alert-soft border border-error': alert.type === EnumAlertType.Warning,
+                    'alert-error alert-soft border border-error': alert.type === EnumAlertType.Error,
+                    'alert-success alert-soft border border-error': alert.type === EnumAlertType.Success
+                }">
                 <CircleAlertIcon v-if="alert.type === EnumAlertType.Info" />
-                <TriangleAlertIcon
-                    v-else-if="alert.type === EnumAlertType.Warning || alert.type === EnumAlertType.Error" />
+                <TriangleAlertIcon v-else-if="alert.type === EnumAlertType.Warning || alert.type === EnumAlertType.Error" />
                 <CircleCheckIcon v-else-if="alert.type === EnumAlertType.Success" />
                 <BrushCleaningIcon v-else-if="alert.type === EnumAlertType.Debug" />
                 <span>{{ alert.message }}</span>
@@ -33,6 +34,22 @@ watchEffect(() => {
                     <XIcon class="icon-sm" />
                 </button>
             </div>
-        </div>
+        </TransitionGroup>
     </dialog>
 </template>
+<style scoped>
+.alert-enter-active {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.alert-leave-active {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.alert-enter-from {
+    opacity: 0;
+    transform: translateY(-10px); /* slides in from above */
+}
+.alert-leave-to {
+    opacity: 0;
+    transform: translateY(-10px); /* slides out upward */
+}
+</style>
