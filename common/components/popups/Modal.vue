@@ -19,7 +19,6 @@ watch(controller.isShown, (isShown) => {
     }
 });
 
-defineExpose({ confirm: controller.confirm, show: controller.show, cancel: controller.cancel });
 defineSlots<{
     title: any;
     default: any;

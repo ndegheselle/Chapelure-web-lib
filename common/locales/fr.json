@@ -47,7 +47,8 @@
     "confirmation": {
         "remove": {
             "title": "Confirmer la suppression",
-            "message": "Etes vous sure de vouloir supprimer {name} ?"
+            "message": "Etes vous sure de vouloir supprimer {name} ?",
+            "messageSimple": "Etes vous sure de vouloir supprimer cette élément ?"
         }
     },
     "data": {

@@ -13,6 +13,15 @@ export interface IModalController<T = boolean> {
 }
 
 /**
+ * Modal element that expose a show method.
+ * Example : defineExpose<IEditModal<ChildrenData>>({ show });
+ */
+export interface IEditModal<T>
+{
+    show(child: T): Promise<T | null>;
+}
+
+/**
  * Options for the useModal composable. 
  * onShow is called when the modal is shown,
  * onCancel is called when the user cancel the modal,
@@ -39,10 +48,10 @@ export function useModal<T = boolean>(option: IModalOptions<T> = {}): IModalCont
 
     function confirm(result: T | null = true as any) {
         isShown.value = false;
-        if (option?.onConfirm?.(result) == true) {
-            deferred?.resolve(result ?? true as any);
-            deferred = null;
-        }
+        if (option?.onConfirm?.(result) === false)
+            return;
+        deferred?.resolve(result ?? true as any);
+        deferred = null;
     }
 
     function cancel() {
