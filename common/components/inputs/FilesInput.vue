@@ -6,10 +6,11 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { accept = 'image/*', maxFilesNumber = 1, maxMbSize = 2 } = defineProps<{
+const { accept = 'image/*', maxFilesNumber = 1, maxMbSize = 2, hideFilesList = false } = defineProps<{
     accept?: string;
     maxFilesNumber?: number;
     maxMbSize?: number;
+    hideFilesList?: boolean;
 }>();
 
 const files = defineModel<File[]>({default: []});
@@ -127,7 +128,7 @@ function removeFile(index: number) {
         </div>
         <input @change="onChange" ref="fileInput" type="file" :accept="accept" class="hidden"
             :multiple="maxFilesNumber > 1" />
-        <ul class="list bg-base-200 shadow rounded-box mt-1" v-if="files.length">
+        <ul class="list bg-base-200 shadow rounded-box mt-1" v-if="!hideFilesList && files.length">
             <li v-for="(file, index) in files" class="list-row p-1 items-center">
                 <img v-if="canPreviewAsImage(file)" :src="toLink(file)" class="size-10 rounded-box" />
                 <div v-else class="size-10 flex">
