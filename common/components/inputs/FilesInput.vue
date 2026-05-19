@@ -1,32 +1,23 @@
 <script setup lang="ts">
 import { useAlert } from '@chapelure/common/composables/popups/useAlert';
-import { FileIcon, FolderOpenIcon, UploadIcon, XIcon } from 'lucide-vue-next';
+import { FolderOpenIcon, UploadIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { accept = 'image/*', maxFilesNumber = 1, maxMbSize = 2 } = defineProps<{
+const { accept = 'image/*', maxMbSize = 2, multiple = false } = defineProps<{
     accept?: string;
-    maxFilesNumber?: number;
     maxMbSize?: number;
+    multiple?: boolean;
 }>();
-
-const files = defineModel<File[]>({default: []});
+const emit = defineEmits<{
+  change: [files: File[]]
+}>()
 
 const fileInput = ref<HTMLInputElement | null>(null);
 const isDragging = ref(false);
 const alert = useAlert();
-
-const PREVIEWABLE_TYPES = new Set([
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-    "image/webp",
-    "image/svg+xml",
-    "image/bmp",
-    "image/avif",
-]);
 
 function triggerFileSelect() {
     fileInput.value?.click();
@@ -40,7 +31,7 @@ function onDragOver(e: DragEvent) {
 function onDrop(e: DragEvent) {
     e.preventDefault();
     isDragging.value = false;
-    
+
     if (e.dataTransfer?.files && fileInput.value) {
         fileInput.value.files = e.dataTransfer.files;
         fileInput.value.dispatchEvent(new Event('change', { bubbles: true }));
@@ -72,7 +63,7 @@ function onChange() {
             return false;
         }
         if (file.size > maxBytes) {
-            rejected.push(t('inputs.file.upload.exceed', { name: file.name, size: formatBytes(file.size), maxSize: maxMbSize }));
+            rejected.push(t('inputs.file.upload.exceedSize', { name: file.name, size: formatBytes(file.size), maxSize: maxMbSize }));
             return false;
         }
         return true;
@@ -84,11 +75,7 @@ function onChange() {
 
     if (!valid.length) return;
 
-    let merged = files.value.concat(valid);
-    if (merged.length > maxFilesNumber) {
-        merged = merged.slice(merged.length - maxFilesNumber);
-    }
-    files.value = merged;
+    emit('change', valid);
 }
 
 function formatBytes(bytes: number, decimals: number = 2): string {
@@ -99,48 +86,22 @@ function formatBytes(bytes: number, decimals: number = 2): string {
     return `${(bytes / 1_073_741_824).toFixed(d)} GB`;
 }
 
-function toLink(file: File) { return URL.createObjectURL(file); }
-
-function canPreviewAsImage(file: File): boolean {
-    return PREVIEWABLE_TYPES.has(file.type);
-}
-
-function removeFile(index: number) {
-    files.value.splice(index, 1);
-}
 </script>
 
 <template>
-    <div class="flex flex-col">
-        <div class="bg-base-100 rounded-box p-3 border border-dashed border-base-content/20 flex flex-col justify-center items-center cursor-pointer transitions transition-colors"
-            :class="{ 'border-primary bg-base-200': isDragging, 'hover:border-primary': !isDragging }"
-            @click="triggerFileSelect" @dragover="onDragOver" @dragleave="isDragging = false" @drop="onDrop">
-            <UploadIcon class="icon-lg opacity-50" />
-            <b>{{ $t('inputs.file.upload.label') }}</b>
-            <div v-if="$slots.constraints" class="text-center text-sm opacity-60 wrap-break-word">
-                <slot name="constraints" />
-            </div>
-            <button class="btn btn-sm mt-1">
-                <FolderOpenIcon />
-                {{ $t('inputs.file.upload.browse') }}
-            </button>
+    <div class="bg-base-100 rounded-box p-3 border border-dashed border-base-content/20 flex flex-col justify-center items-center cursor-pointer transitions transition-colors"
+        :class="{ 'border-primary bg-base-200': isDragging, 'hover:border-primary': !isDragging }"
+        @click="triggerFileSelect" @dragover="onDragOver" @dragleave="isDragging = false" @drop="onDrop">
+        <UploadIcon class="icon-lg opacity-50" />
+        <b>{{ $t('inputs.file.upload.label') }}</b>
+        <div v-if="$slots.constraints" class="text-center text-sm opacity-60 wrap-break-word">
+            <slot name="constraints" />
         </div>
-        <input @change="onChange" ref="fileInput" type="file" :accept="accept" class="hidden"
-            :multiple="maxFilesNumber > 1" />
-        <ul class="list bg-base-200 shadow rounded-box mt-1" v-if="files.length">
-            <li v-for="(file, index) in files" class="list-row p-1 items-center">
-                <img v-if="canPreviewAsImage(file)" :src="toLink(file)" class="size-10 rounded-box" />
-                <div v-else class="size-10 flex">
-                    <FileIcon class="m-auto icon-lg" />
-                </div>
-                <a :href="toLink(file)" target="_blank" rel="noopener noreferrer">
-                    {{ file.name }}
-                </a>
-                <span class="text-xs uppercase font-semibold opacity-60">{{ formatBytes(file.size) }}</span>
-                <button class="btn btn-sm btn-square btn-ghost" @click="removeFile(index)">
-                    <XIcon />
-                </button>
-            </li>
-        </ul>
+        <button class="btn btn-sm mt-1">
+            <FolderOpenIcon />
+            {{ $t('inputs.file.upload.browse') }}
+        </button>
     </div>
+    <input @change="onChange" ref="fileInput" type="file" :accept="accept" class="hidden"
+        :multiple="multiple" />
 </template>
