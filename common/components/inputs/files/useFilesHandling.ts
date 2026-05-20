@@ -2,6 +2,13 @@ import { useAlert } from '@chapelure/common/composables/popups/useAlert';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+/**
+ * Usage with FilesInput + FilesList:
+ *   const { files, update } = useOneFile();
+ * 
+ *   <FilesInput @change="update" />   — feeds validated File[] into the composable
+ *   <FilesList :files />               — renders the resulting files array; supports inline removal
+ */
 export function useOneFile() {
     const files = ref<File[]>([]);
 
@@ -15,6 +22,14 @@ export function useOneFile() {
     }
 }
 
+/**
+ * Usage with FilesInput + FilesList:
+ *   const { files, update } = useMultipleFiles(5);
+ *
+ *   <FilesInput @change="update" />   — feeds validated File[] into the composable
+ *   <FilesList :files />               — renders the resulting files array; supports inline removal
+ * @param maxFilesNumber max number of files accepted
+ */
 export function useMultipleFiles(maxFilesNumber: number = 10) {
     const { t } = useI18n();
     const alert = useAlert();
