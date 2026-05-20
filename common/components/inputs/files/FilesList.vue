@@ -1,28 +1,7 @@
 <script setup lang="ts">
-import { useAlert } from '@chapelure/common/composables/popups/useAlert';
 import { FileIcon, XIcon } from 'lucide-vue-next';
-import { watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
-const { maxFilesNumber = 1 } = defineProps<{
-    maxFilesNumber?: number;
-}>();
-
-const files = defineModel<File[]>({ default: [] });
-watch(files, (newFiles) => {
-    // Selection of one file allow replacement
-    if (maxFilesNumber == 1)
-        files.value = newFiles.slice(0, 1);
-    else if (newFiles.length > maxFilesNumber) {
-        alert.error(t('inputs.file.upload.exceedNumber', { number: maxFilesNumber }));
-        files.value = newFiles.slice(0, maxFilesNumber);
-    }
-});
-
-const alert = useAlert();
-
+const {files = []} = defineProps<{ files: File[] }>();
 const PREVIEWABLE_TYPES = new Set([
     "image/jpeg",
     "image/png",
@@ -48,14 +27,14 @@ function canPreviewAsImage(file: File): boolean {
 }
 
 function removeFile(index: number) {
-    files.value.splice(index, 1);
+    files.splice(index, 1);
 }
 </script>
 
 <template>
     <ul class="list bg-base-200 shadow rounded-box mt-1" v-if="files.length">
         <li v-for="(file, index) in files" class="list-row p-1 items-center">
-            <img v-if="canPreviewAsImage(file)" :src="toLink(file)" class="size-10 rounded-box" />
+            <img v-if="canPreviewAsImage(file)" :src="toLink(file)" class="size-10 object-cover rounded-box" />
             <div v-else class="size-10 flex">
                 <FileIcon class="m-auto icon-lg" />
             </div>

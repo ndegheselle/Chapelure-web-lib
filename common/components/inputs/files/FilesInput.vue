@@ -74,7 +74,7 @@ function onChange() {
     }
 
     if (!valid.length) return;
-
+    
     emit('change', valid);
 }
 
@@ -85,7 +85,6 @@ function formatBytes(bytes: number, decimals: number = 2): string {
     else if (bytes < 1_073_741_824) return `${(bytes / 1_048_576).toFixed(d)} MB`;
     return `${(bytes / 1_073_741_824).toFixed(d)} GB`;
 }
-
 </script>
 
 <template>
