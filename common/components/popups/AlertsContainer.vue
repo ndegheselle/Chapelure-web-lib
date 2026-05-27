@@ -18,7 +18,7 @@ watchEffect(() => {
     <dialog ref="dialogRef" class="z-9999"> 
         <TransitionGroup name="alert" tag="div" class="toast stack stack-top">
             <div role="alert" class="alert" 
-                v-for="alert in alerts" :key="alert.id" 
+                v-for="alert in alerts.toReversed()" :key="alert.id" 
                 :class="{
                     'alert-warning alert-dash': alert.type === EnumAlertType.Debug,
                     'alert-warning alert-soft border border-error': alert.type === EnumAlertType.Warning,
